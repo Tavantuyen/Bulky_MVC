@@ -1,0 +1,54 @@
+﻿@model Category
+
+<div class="card shadow border-0 mb-5 p-0">
+    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Update Category</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <form method="post" class="row">
+            <div class="border p-3">
+                <input asp-for="Id" hidden />
+                @* asp-validation-summary hiển thị thông báo lỗi
+                All: Hiển thị tất cả lỗi requied trong Category lên trên table
+                ModelOnly:Chỉ hiển thị ModelState.AddModelError( và phải ko xác định key ) không hiển thị thuộc tính lên table
+                None:ko hiển thị bất kỳ thông báo nào
+                *@
+                @*  <div class="form-control" asp-validation-summary="All"></div> *@
+                <div class="form-floating py-2 col-12">
+                    <input asp-for="Name" class="form-control border-0 shadow" />
+                    <label asp-for="Name" class="ms-2"></label>
+
+                    @* asp-validation-for kiểm tra lỗi đã được định nghĩa trong Category (required,range,length)*@
+                    <span class="text-danger" asp-validation-for="Name"></span>
+                </div>
+                @* asp-for có thế hiện tên thuộc tính và nhận giá trị thay đổi khi gửi,  trường input type tự nhận biết asp-for là type gì*@
+                <div class="form-floating py-2 col-12">
+                    <input asp-for="DisplayOrder" class="form-control border-0 shadow" />
+                    <label asp-for="DisplayOrder" class="ms-2"></label>
+
+                    <span class="text-danger" asp-validation-for="DisplayOrder"></span>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-6 col-md-3">
+                        <button type="submit" class="btn btn-primary form-control">
+                            Update
+                        </button>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a class="btn btn-outline-primary border form-control" asp-area="Admin" asp-controller="Category" asp-action="Index">Back To List</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

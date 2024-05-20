@@ -1,0 +1,48 @@
+﻿@page
+@model BulkyWebRazor_Temp.Pages.Categories.EditModel
+
+
+<form method="post">
+    <div class="border p-3 mt-4">
+        <input asp-for="@Model.category.Id" hidden />
+        <div class="row pb-2">
+            <h2 class="text-primary">Update Category</h2>
+            <hr />
+        </div>
+        @* asp-validation-summary hiển thị thông báo lỗi
+        All: Hiển thị tất cả lỗi requied trong Category lên trên table
+        ModelOnly:Chỉ hiển thị ModelState.AddModelError( và phải ko xác định key ) không hiển thị thuộc tính lên table
+        None:ko hiển thị bất kỳ thông báo nào
+        *@
+        @*  <div class="form-control" asp-validation-summary="All"></div> *@
+        <div class="mb-3 row p-1">
+            <label asp-for="@Model.category.Name" class="form-label p-0"> </label>
+            <input asp-for="@Model.category.Name" class="form-control" />
+            @* asp-validation-for kiểm tra lỗi đã được định nghĩa trong Category (required,range,length)*@
+            <span class="form-label text-danger" asp-validation-for="@Model.category.Name"></span>
+        </div>
+        @* asp-for có thế hiện tên thuộc tính và nhận giá trị thay đổi khi gửi,  trường input type tự nhận biết asp-for là type gì*@
+        <div class="mb-3 row p-1">
+            <label asp-for="@Model.category.DisplayOrder" class="form-label p-0"></label>
+            <input asp-for="@Model.category.DisplayOrder" class="form-control" />
+            <span class="form-label text-danger" asp-validation-for="@Model.category.DisplayOrder"></span>
+        </div>
+        <div class="row">
+            <div class="col-6 col-md-3">
+                <button type="submit" class="btn btn-primary form-control">
+                    Update
+                </button>
+            </div>
+            <div class="col-6 col-md-3">
+                <a class="btn btn-outline-secondary form-control border" asp-page="/Categories/Index">Back To List</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
+
