@@ -1,6 +1,8 @@
 ﻿using BulkyBook.DataAccess.Repository.IRepository;
 using BulkyBook.Models;
 using BulkyBook.Models.ViewModels;
+using BulkyBook.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
@@ -8,6 +10,7 @@ using System.Collections.Generic;
 namespace BulkyBookWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)] // có thể áp dụng cho từng các acction cũng đc
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -76,16 +79,16 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
                     //Path.Combine(wwwRootPath,@"images\product"); gộp đường dẫn lại với nhau
                     string productPath = Path.Combine(wwwRootPath, @"images\product");
 
-                    if (!string.IsNullOrEmpty(productVM.Product.ImageUrl))
-                    {
-                        //delete file image cũ
-                        var oldImage = Path.Combine(wwwRootPath, productVM.Product.ImageUrl.TrimStart('\\'));
+                    //if (!string.IsNullOrEmpty(productVM.Product.ImageUrl))
+                    //{
+                    //    //delete file image cũ
+                    //    var oldImage = Path.Combine(wwwRootPath, productVM.Product.ImageUrl.TrimStart('\\'));
 
-                        if (System.IO.File.Exists(oldImage))
-                        {
-                            System.IO.File.Delete(oldImage);
-                        }
-                    }
+                    //    if (System.IO.File.Exists(oldImage))
+                    //    {
+                    //        System.IO.File.Delete(oldImage);
+                    //    }
+                    //}
 
                     using (var fileStream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
                     {
@@ -93,7 +96,7 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
                         file.CopyTo(fileStream);
                     }
 
-                    productVM.Product.ImageUrl = @"\images\product\" + fileName;
+                    //productVM.Product.ImageUrl = @"\images\product\" + fileName;
                     
                     if (productVM.Product.Id == 0)
                     {
@@ -113,7 +116,7 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
                 {
                     if (productVM.Product.Id == 0)
                     {
-                        productVM.Product.ImageUrl = "";
+                        //productVM.Product.ImageUrl = "";
                         _unitOfWork.Product.Add(productVM.Product);
                         TempData["success"] = "Create product successfully";
                         _unitOfWork.Save();
@@ -266,17 +269,17 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
                 return Json(new { success = false, message = "Error while deleting" });
             }
 
-            if(!string.IsNullOrEmpty(productTobeDeleted.ImageUrl))
-            {
-                string wwwrootPath = _webHostEnvironment.WebRootPath;
-                var oldImage = Path.Combine(wwwrootPath, productTobeDeleted.ImageUrl.TrimStart('\\'));
+            //if(!string.IsNullOrEmpty(productTobeDeleted.ImageUrl))
+            //{
+            //    string wwwrootPath = _webHostEnvironment.WebRootPath;
+            //    var oldImage = Path.Combine(wwwrootPath, productTobeDeleted.ImageUrl.TrimStart('\\'));
 
-                if(System.IO.File.Exists(oldImage))
-                {
-                    System.IO.File.Delete(oldImage);
-                }
+            //    if(System.IO.File.Exists(oldImage))
+            //    {
+            //        System.IO.File.Delete(oldImage);
+            //    }
 
-            }
+            //}
 
             _unitOfWork.Product.Remove(productTobeDeleted);
             _unitOfWork.Save();

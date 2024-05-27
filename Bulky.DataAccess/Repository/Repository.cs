@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -30,15 +31,24 @@ namespace BulkyBook.DataAccess.Repository
             dbSet.Add(entity);
         }
 
-        public T Get(System.Linq.Expressions.Expression<Func<T, bool>> filter, string? includeProperties = null)
+        public T Get(System.Linq.Expressions.Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false)
         {
             ///IQueryable<T> query = dbSet; chuỗi truy vấn không thực thi dựa trên toàn bộ tập hợp dữ liệu được quản lý bởi dbSet. 
             ///Điều này cho phép bạn tiếp tục xây dựng và tùy chỉnh truy vấn của mình thông qua 
             ///các phương thức LINQ, như Where(), OrderBy(), Select()
             ///giống   Category? categoryFromDb =_db.Categories.Where(u => u.Id == id).FirstOrDefault();
-
-            IQueryable<T> query = dbSet;
-            query=query.Where(filter);
+            ///
+            IQueryable<T> query;
+            if (tracked)
+            {
+                query = dbSet; //theo dõi thực thể, ko cần dùng update vẫn cập nhập
+            }    
+            else
+            {
+                query = dbSet.AsNoTracking(); // ko theo dõi entity , phải dùng update để cập nhập
+            }
+            
+            query = query.Where(filter);
             if (!string.IsNullOrEmpty(includeProperties))
             {
                 foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
@@ -46,12 +56,18 @@ namespace BulkyBook.DataAccess.Repository
                     query = query.Include(includeProp);
                 }
             }
-            return query.FirstOrDefault(); 
+            return query.FirstOrDefault();
+
+
         }
 
-        public IEnumerable<T> GetAll(string? includeProperties=null)
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>> filter=null, string? includeProperties=null)
         {
             IQueryable<T> query = dbSet;
+            if(filter != null)
+            {
+                query = query.Where(filter);
+            }    
             if (!string.IsNullOrEmpty(includeProperties))
             {
                 foreach (var includeprop in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))

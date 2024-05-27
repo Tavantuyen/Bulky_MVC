@@ -30,10 +30,7 @@ namespace BulkyBook.DataAccess.Repository
                 objFormDb.CategoryId=obj.CategoryId;
                 objFormDb.Description = obj.Description;
                 objFormDb.Author=obj.Author;
-                if(obj.ImageUrl!=null)
-                {
-                    objFormDb.ImageUrl = obj.ImageUrl;
-                }
+                
                 _db.Products.Update(objFormDb);
             }    
             

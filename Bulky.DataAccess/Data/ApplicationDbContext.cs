@@ -13,11 +13,24 @@ namespace BulkyBook.DataAccess.Data
         }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
-        
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<Company> Conpanies { get; set; }
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+        public DbSet<OrderHeader> OrderHeaders { get; set; }
+
+        public DbSet<OrderDetail> OrderDetails { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // phải viết  base.OnModelCreating(modelBuilder); để xác thực  IdentityDbContext
             base.OnModelCreating(modelBuilder);
+
+      
+
+            modelBuilder.Entity<Company>().HasData(
+            new Company(){Id=1,Name="Tech Solution",PhoneNumber= "0367754060", StreetAdress = "123 Tech St", City="Tech City",State="TL",PotalCode="6699884400"},
+            new Company(){Id=2,Name="Vivid Books",PhoneNumber="0984126854", StreetAdress = "999 Vivid St", City= "Vid City", State="IL",PotalCode="666654"},
+            new Company(){Id=3,Name="Readers Club",PhoneNumber="0383802855", StreetAdress = "999 Main St", City="Main City",State="NV",PotalCode="94654578"}
+            );
 
             modelBuilder.Entity<Category>().HasData(
                 new Category() { Id = 1, Name = "Action", DisplayOrder = 1 },
@@ -36,7 +49,6 @@ namespace BulkyBook.DataAccess.Data
                    Price50 = 85,
                    Price100 = 80,
                    CategoryId=1,
-                   ImageUrl=""
                },
                 new Product
                 {
@@ -50,7 +62,6 @@ namespace BulkyBook.DataAccess.Data
                     Price50 = 25,
                     Price100 = 20,
                     CategoryId = 1,
-                    ImageUrl = ""
 
 
                 },
@@ -66,7 +77,6 @@ namespace BulkyBook.DataAccess.Data
                     Price50 = 40,
                     Price100 = 35,
                     CategoryId = 1,
-                    ImageUrl = ""
 
 
                 },
@@ -81,8 +91,7 @@ namespace BulkyBook.DataAccess.Data
                     Price = 65,
                     Price50 = 60,
                     Price100 = 55,
-                    CategoryId = 2,
-                    ImageUrl = ""
+                    CategoryId = 2
 
 
                 },
@@ -98,7 +107,6 @@ namespace BulkyBook.DataAccess.Data
                     Price50 = 25,
                     Price100 = 20,
                     CategoryId = 2,
-                    ImageUrl = ""
 
 
                 },
@@ -114,7 +122,6 @@ namespace BulkyBook.DataAccess.Data
                     Price50 = 22,
                     Price100 = 20,
                     CategoryId = 3,
-                    ImageUrl = ""
 
 
                 }
