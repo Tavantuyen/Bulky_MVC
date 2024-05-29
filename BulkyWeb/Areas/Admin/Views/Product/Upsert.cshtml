@@ -90,8 +90,8 @@
                         </div>
 
                         <div class="form-floating py-2 col-12">
-                            <input type="file" name="file" class="form-control border-0 shadow" />
-                            @* <label asp-for="Product.ImageUrl" class="ms-2"></label> *@
+                            <input type="file" name="files" multiple class="form-control border-0 shadow" />
+                            <label asp-for="Product.ProductImages" class="ms-2"></label>
                         </div>
 
 
@@ -116,6 +116,23 @@
                     </div>
                 </div>
                 <div class="col-2">
+                    @{
+                        if(Model.Product.ProductImages.Count!=0)
+                        {
+                            foreach(var image in Model.Product.ProductImages)
+                            {
+                                <div class="border p-1 m-2 text-center">
+                                    <img src="@image.ImageUrl" class="w-100" style="border-radius:5px;border:1px solid #bbb9b9" />
+                                    <a class="btn btn-danger" asp-area="Admin" asp-controller="Product" asp-action="DeleteImage" asp-route-imageId="@image.Id">
+                                        <i class="bi bi-trash-fill"></i> Delete
+                                    </a>
+                                </div>
+                            }
+                        }
+                    }
+
+
+
                  @*    @{
                         if(!string.IsNullOrEmpty(Model.Product.ImageUrl))
                         {

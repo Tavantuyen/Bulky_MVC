@@ -17,8 +17,8 @@ namespace BulkyBook.DataAccess.Data
         public DbSet<Company> Conpanies { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<OrderHeader> OrderHeaders { get; set; }
-
         public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<ProductImage> ProductImages { get; set; } 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // phải viết  base.OnModelCreating(modelBuilder); để xác thực  IdentityDbContext
